@@ -200,11 +200,17 @@
                         <outlet property="currentCityOutlet" destination="JJe-dU-SyC" id="xMu-JL-6l1"/>
                         <outlet property="currentDate" destination="9CB-QD-x9E" id="9Ts-C8-eli"/>
                         <outlet property="currentDay" destination="wkR-Sr-xU4" id="HvZ-IR-Tp5"/>
+                        <outlet property="firstDate" destination="Kqt-Xe-jqf" id="ii2-st-lSk"/>
+                        <outlet property="firstDay" destination="AaQ-hy-MPU" id="hIr-7k-s3z"/>
                         <outlet property="firstTMax" destination="3mU-Rn-3yh" id="1if-bh-DgO"/>
                         <outlet property="firstTMin" destination="XXJ-1N-jhO" id="GQb-gk-jAg"/>
                         <outlet property="newCityTextField" destination="G1J-XT-oNV" id="wxf-mE-OQQ"/>
+                        <outlet property="secondDate" destination="IWa-9C-gR2" id="spI-Eu-g0U"/>
+                        <outlet property="secondDay" destination="fz8-GC-lUV" id="yTJ-dr-4RT"/>
                         <outlet property="secondTMax" destination="1qg-Ah-697" id="Jgl-QG-Q8v"/>
                         <outlet property="secondTMin" destination="bBy-ly-bVE" id="Pge-eJ-qnH"/>
+                        <outlet property="thirdDate" destination="sWZ-CT-zg6" id="f0c-nQ-qDi"/>
+                        <outlet property="thirdDay" destination="PcV-Fi-5t3" id="gMa-Js-XkN"/>
                         <outlet property="thirdTMax" destination="R03-aZ-Yl9" id="DLy-v5-lgW"/>
                         <outlet property="thirdTMin" destination="VWy-sT-eqx" id="Ccp-5o-SIY"/>
                         <outlet property="topTimeLabel" destination="l8B-ic-ofH" id="OMP-CN-Jdh"/>

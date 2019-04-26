@@ -16,6 +16,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var currentDate: UILabel!
     @IBOutlet weak var currentDay: UILabel!
 
+    // next 3 days
+    @IBOutlet weak var firstDate: UILabel!
+    @IBOutlet weak var firstDay: UILabel!
+    @IBOutlet weak var secondDate: UILabel!
+    @IBOutlet weak var secondDay: UILabel!
+    @IBOutlet weak var thirdDate: UILabel!
+    @IBOutlet weak var thirdDay: UILabel!
+    
+    
+    // temperature min and max outlets
     @IBOutlet weak var firstTMin: UILabel!
     @IBOutlet weak var firstTMax: UILabel!
     @IBOutlet weak var secondTMin: UILabel!
@@ -46,6 +56,7 @@ class ViewController: UIViewController {
         let time = DateFormatter()
         time.timeStyle = .short
         let date = DateFormatter()
+        print("date = ", date)
         date.dateFormat = "MMMM, dd"
         let weekday = DateFormatter()
         weekday.dateFormat = "EEEE"
@@ -64,6 +75,10 @@ class ViewController: UIViewController {
         
         //showCurrentWeatherForLocation(location: "Stillwater")
         updateWeatherForLocation(location: "Stillwater")
+        
+        
+        // to set next three days
+        setAllDays()
         
     }
     
@@ -97,6 +112,47 @@ class ViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func setAllDays()
+    {
+        let date = Date()
+
+        // 1st next day
+        let oneDate = Date.init(timeIntervalSinceNow: 86400)
+        print("cd = ", oneDate)
+        let firstNextDay = DateFormatter()
+        firstNextDay.dateFormat = "MMMM, dd"
+        let firstWeekday = DateFormatter()
+        firstWeekday.dateFormat = "EEEE"
+        
+        firstDate.text? = firstNextDay.string(from: oneDate)
+        firstDay.text? = firstWeekday.string(from: oneDate)
+        
+        
+        // 2nd next day
+        let twoDate = Date.init(timeIntervalSinceNow: 172800)
+        print("cd = ", twoDate)
+        let secondNextDay = DateFormatter()
+        secondNextDay.dateFormat = "MMMM, dd"
+        let secondWeekday = DateFormatter()
+        secondWeekday.dateFormat = "EEEE"
+        
+        secondDate.text? = secondNextDay.string(from: twoDate)
+        secondDay.text? = secondWeekday.string(from: twoDate)
+        
+        
+        // 3rd next day
+        let threeDate = Date.init(timeIntervalSinceNow: 259200)
+        print("cd = ", threeDate)
+        let thirdNextDay = DateFormatter()
+        thirdNextDay.dateFormat = "MMMM, dd"
+        let thirdWeekday = DateFormatter()
+        thirdWeekday.dateFormat = "EEEE"
+        
+        thirdDate.text? = secondNextDay.string(from: threeDate)
+        thirdDay.text? = thirdWeekday.string(from: threeDate)
+        
     }
     
     // updateclock function
