@@ -16,6 +16,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var currentDate: UILabel!
     @IBOutlet weak var currentDay: UILabel!
 
+    // current weather information information
+    @IBOutlet weak var todayWeatherOutlet: UILabel!
+    @IBOutlet weak var todayTempOutlet: UILabel!
+    @IBOutlet weak var todayWeatherSummary: UILabel!
+    
+    
     // next 3 days
     @IBOutlet weak var firstDate: UILabel!
     @IBOutlet weak var firstDay: UILabel!
@@ -35,10 +41,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var currentCityOutlet: UIButton!
     @IBOutlet weak var newCityTextField: UITextField!
     
+    
+    //icon image view
+    @IBOutlet weak var iconImageView: UIImageView!
+    
+    var temp : String = ""
+    var iconText : String = ""
+    var summaryText : String = ""
+    
     var forecastData = [WeatherJSON]()
-    //var dailyForecastData = [CurrentWeatherJSON]()
-    //var hourlyForecastData = [HourlyWeatherJSON]()
-    let clock = Clock()
+        let clock = Clock()
 
     
     override func viewDidLoad() {
@@ -51,12 +63,14 @@ class ViewController: UIViewController {
         secondTMax.text? = ""
         thirdTMin.text? = ""
         thirdTMax.text? = ""
+        todayWeatherSummary.text? = ""
+        todayTempOutlet.text? = ""
+        todayWeatherOutlet.text? = ""
         
         // current date and time setup
         let time = DateFormatter()
         time.timeStyle = .short
         let date = DateFormatter()
-        print("date = ", date)
         date.dateFormat = "MMMM, dd"
         let weekday = DateFormatter()
         weekday.dateFormat = "EEEE"
@@ -73,13 +87,79 @@ class ViewController: UIViewController {
         //update the vlock time periodically
         Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.updateClock), userInfo: nil, repeats: true)
         
-        //showCurrentWeatherForLocation(location: "Stillwater")
+        showCurrentWeatherForLocation(location: "Stillwater")
+        
         updateWeatherForLocation(location: "Stillwater")
         
-        
+    
         // to set next three days
         setAllDays()
         
+    }
+    
+    func showCurrentWeatherForLocation(location: String)
+    {
+        CLGeocoder().geocodeAddressString(location) { (placemarks: [CLPlacemark]?, error: Error?) in
+            if error == nil
+            {
+                if let location = placemarks?.first?.location
+                {
+                    
+                    self.currentForecast(withLocation: location.coordinate)
+                }
+            }
+        }
+    }
+    
+    func currentForecast(withLocation location : CLLocationCoordinate2D)
+    {
+
+        let url = "https://api.darksky.net/forecast/9611d5e7c2754ea4d423e30f1d258583/" + "\(location.latitude),\(location.longitude)"
+        let request = URLRequest (url: URL(string: url)!)
+        let task = URLSession.shared.dataTask(with: request)
+        {
+            (data: Data?, request: URLResponse?, error: Error?) in
+            if error == nil
+            {
+                do
+                {
+                    let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as! [String : Any]
+
+                    if let currently = json["currently"] as? [String : Any] {
+                        
+                        if let chance2 = currently["temperature"] as? Double{
+                            self.temp = String(Int(chance2))
+                        }
+                        
+                        if let iconDum = currently["icon"] as? String
+                        {
+                           self.iconText = String(iconDum)
+                        }
+                        
+                        if let summaryDum = currently["summary"] as? String
+                        {
+                            self.summaryText = String(summaryDum)
+                        }
+                    
+                        // update currentWeather information
+                        DispatchQueue.main.async
+                        {
+                            self.todayWeatherOutlet.text? = self.iconText
+                            self.todayTempOutlet.text? = self.temp + " °F"
+                            self.todayWeatherSummary.text? = self.summaryText
+                        }
+                        if let _ = json["error"]{
+                        }
+
+                    }
+                    
+                }
+                catch{
+                    print(error.localizedDescription)
+                }
+            }
+       }
+        task.resume()
     }
     
     func updateWeatherForLocation(location: String)
@@ -89,13 +169,11 @@ class ViewController: UIViewController {
             {
                 if let location = placemarks?.first?.location
                 {
-                    print("Location ", location)
                     
                     WeatherJSON.forecast(withLocation: location.coordinate, completion: {(results:[WeatherJSON]?) in
                         
                         if let weatherData = results{
                             self.forecastData = weatherData
-                            //print(self.forecastData)
                             
                             
                             DispatchQueue.main.async {
@@ -120,7 +198,7 @@ class ViewController: UIViewController {
 
         // 1st next day
         let oneDate = Date.init(timeIntervalSinceNow: 86400)
-        print("cd = ", oneDate)
+
         let firstNextDay = DateFormatter()
         firstNextDay.dateFormat = "MMMM, dd"
         let firstWeekday = DateFormatter()
@@ -132,7 +210,7 @@ class ViewController: UIViewController {
         
         // 2nd next day
         let twoDate = Date.init(timeIntervalSinceNow: 172800)
-        print("cd = ", twoDate)
+
         let secondNextDay = DateFormatter()
         secondNextDay.dateFormat = "MMMM, dd"
         let secondWeekday = DateFormatter()
@@ -144,7 +222,7 @@ class ViewController: UIViewController {
         
         // 3rd next day
         let threeDate = Date.init(timeIntervalSinceNow: 259200)
-        print("cd = ", threeDate)
+
         let thirdNextDay = DateFormatter()
         thirdNextDay.dateFormat = "MMMM, dd"
         let thirdWeekday = DateFormatter()
