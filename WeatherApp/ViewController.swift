@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
 
     // current time, day and date labels
     @IBOutlet weak var topTimeLabel: UILabel!
@@ -46,6 +46,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var thirdTMin: UILabel!
     @IBOutlet weak var thirdTMax: UILabel!
     @IBOutlet weak var currentCityOutlet: UIButton!
+    
+    // new city text field
     @IBOutlet weak var newCityTextField: UITextField!
     
     
@@ -64,6 +66,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // make text field a delegate
+        newCityTextField.delegate = self
         
         //initializing the temperature outlets as null
         firstTMin.text? = ""
@@ -383,8 +388,10 @@ class ViewController: UIViewController {
     
     
     // hit the current city button to change the location
-    
-    @IBAction func currentCityChangeActionButton(_ sender: UIButton) {
+    @IBAction func currentCityChangeActionButton(_ sender: UIButton)
+    {
+        newCityTextField.isHidden = false
+        
     }
     
     
@@ -392,7 +399,7 @@ class ViewController: UIViewController {
     // convert temperature from fahrenheit to celsius
     func tempConvertFTC(tempFahrenheit: Int) -> Int
     {
-        let tempCelsius = (tempFahrenheit - 32) * 5 / 9
+        let tempCelsius = ((tempFahrenheit - 32) * 5) / 9
         return tempCelsius
     }
     
@@ -400,8 +407,26 @@ class ViewController: UIViewController {
     // convert temperature from celsius to fahrenheit
     func tempConvertCTF(tempCelsius: Int) -> Int
     {
-        let tempFahren = tempCelsius * 9 / 5 + 32
+        let tempFahren = ((tempCelsius * 9) / 5) + 32
         return tempFahren
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        newCityTextField.isHidden = true
+        currentCityOutlet.setTitle(newCityTextField!.text, for: .normal)
+        
+        showCurrentWeatherForLocation(location: newCityTextField!.text!)
+        updateWeatherForLocation(location: newCityTextField!.text!)
+        
+        newCityTextField!.resignFirstResponder()
+        return true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+        newCityTextField.resignFirstResponder()
+        //return true;
     }
     
     override func didReceiveMemoryWarning()
