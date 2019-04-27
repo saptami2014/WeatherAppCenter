@@ -32,6 +32,9 @@
                                 <state key="normal" title="CurrTemp">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="toggleTemperatue:" destination="BYZ-38-t0r" eventType="touchUpInside" id="goE-7f-8su"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JJe-dU-SyC">
                                 <rect key="frame" x="42" y="121" width="153" height="43"/>
@@ -40,6 +43,9 @@
                                 <state key="normal" title="Stillwater">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="currentCityChangeActionButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZfM-8E-1tV"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l8B-ic-ofH">
                                 <rect key="frame" x="269" y="91" width="107" height="26"/>
@@ -56,7 +62,7 @@
                                 <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bC9-RB-dYS">
-                                <rect key="frame" x="269" y="273" width="125" height="128"/>
+                                <rect key="frame" x="269" y="268" width="125" height="196"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9CB-QD-x9E">
@@ -197,9 +203,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="currentCityLabelButtonLabel" destination="JJe-dU-SyC" id="t1U-dV-hEf"/>
                         <outlet property="currentCityOutlet" destination="JJe-dU-SyC" id="xMu-JL-6l1"/>
                         <outlet property="currentDate" destination="9CB-QD-x9E" id="9Ts-C8-eli"/>
                         <outlet property="currentDay" destination="wkR-Sr-xU4" id="HvZ-IR-Tp5"/>
+                        <outlet property="currentTempButtonOutlet" destination="ywT-oV-eJ6" id="niS-yC-RIX"/>
                         <outlet property="firstDate" destination="Kqt-Xe-jqf" id="ii2-st-lSk"/>
                         <outlet property="firstDay" destination="AaQ-hy-MPU" id="hIr-7k-s3z"/>
                         <outlet property="firstTMax" destination="3mU-Rn-3yh" id="1if-bh-DgO"/>

@@ -12,16 +12,23 @@ import CoreLocation
 
 class ViewController: UIViewController {
 
+    // current time, day and date labels
     @IBOutlet weak var topTimeLabel: UILabel!
     @IBOutlet weak var currentDate: UILabel!
     @IBOutlet weak var currentDay: UILabel!
 
+   
     // current weather information information
     @IBOutlet weak var todayWeatherOutlet: UILabel!
     @IBOutlet weak var todayTempOutlet: UILabel!
     @IBOutlet weak var todayWeatherSummary: UILabel!
     
+   
+    // the button labels
+    @IBOutlet weak var currentTempButtonOutlet: UIButton!
+    @IBOutlet weak var currentCityLabelButtonLabel: UIButton!
     
+   
     // next 3 days
     @IBOutlet weak var firstDate: UILabel!
     @IBOutlet weak var firstDay: UILabel!
@@ -45,6 +52,8 @@ class ViewController: UIViewController {
     //icon image view
     @IBOutlet weak var iconImageView: UIImageView!
     
+    var hourTemp : String = ""
+    var imageIcon : String = ""
     var temp : String = ""
     var iconText : String = ""
     var summaryText : String = ""
@@ -66,6 +75,8 @@ class ViewController: UIViewController {
         todayWeatherSummary.text? = ""
         todayTempOutlet.text? = ""
         todayWeatherOutlet.text? = ""
+        currentTempButtonOutlet.setTitle("", for: .normal)
+
         
         // current date and time setup
         let time = DateFormatter()
@@ -94,7 +105,6 @@ class ViewController: UIViewController {
     
         // to set next three days
         setAllDays()
-        
     }
     
     func showCurrentWeatherForLocation(location: String)
@@ -104,13 +114,55 @@ class ViewController: UIViewController {
             {
                 if let location = placemarks?.first?.location
                 {
-                    
+                    // current weather forecast
                     self.currentForecast(withLocation: location.coordinate)
+                    
+                    // hourly weather forecast
+                    self.hourlyForecast(withLocation: location.coordinate)
                 }
             }
         }
     }
     
+    
+    // hourly forecast
+    func hourlyForecast (withLocation location: CLLocationCoordinate2D)
+    {
+        let url = "https://api.darksky.net/forecast/9611d5e7c2754ea4d423e30f1d258583/37.8267,-122.4233" /*+ "\(location.latitude),\(location.longitude)"*/
+        let request = URLRequest (url: URL(string: url)!)
+        let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
+            guard error == nil else { return }
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as? [String : Any],
+                    let hourly = json["hourly"] as? [String : Any],
+                    let data = hourly["data"] as? [[String : Any]],
+                    data.count > 14,
+                    let hTemp = data[14]["temperature"] as? Double {
+                    self!.hourTemp = String(Int(hTemp))
+                    print(hTemp)
+                    let iconDum = data[14]["icon"] as? String
+    
+                    self!.imageIcon = iconDum!
+                    print("imageIcon = ", self!.imageIcon)
+                
+                }
+            }
+            catch let jsonError
+            {
+                print(jsonError.localizedDescription)
+            }
+            
+            DispatchQueue.main.async
+            {
+                self!.currentTempButtonOutlet.setTitle(self!.hourTemp + " °F", for: .normal)
+                self!.iconImageView.image = UIImage(named: self!.imageIcon)
+            }
+        }
+        task.resume()
+    }
+    
+    
+    // current forecast
     func currentForecast(withLocation location : CLLocationCoordinate2D)
     {
 
@@ -239,6 +291,117 @@ class ViewController: UIViewController {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
         topTimeLabel?.text = formatter.string(from: clock.currentTime as Date)
+    }
+    
+    
+    // hit the current temperature to convert the temperature scale
+    @IBAction func toggleTemperatue(_ sender: UIButton)
+    {
+        let stringS = currentTempButtonOutlet.titleLabel?.text
+        if stringS!.characters.contains("F")
+        {
+            var delimiter = " "
+            var newStringS = stringS?.components(separatedBy: " ")
+            
+            // set for current temperature label
+            let currTempC = tempConvertFTC(tempFahrenheit: Int(newStringS![0])!)
+            
+            newStringS![0] = String(currTempC) + " °C"
+            currentTempButtonOutlet.setTitle(newStringS![0], for: .normal)
+            
+            // set for today temperature label
+            let tString = todayTempOutlet.text?.components(separatedBy: " ")
+            todayTempOutlet.text? = String(tempConvertFTC(tempFahrenheit: Int(tString![0])!)) + " °C"
+            
+            // set for 1st next day minimum temperature label
+            let firstTString = firstTMin.text?.components(separatedBy: " ")
+            firstTMin.text? = String(tempConvertFTC(tempFahrenheit: Int(firstTString![0])!)) + " °C"
+            
+            // set for 1st next day maximum temperature label
+            let firstTMaxString = firstTMax.text?.components(separatedBy: " ")
+            firstTMax.text? = String(tempConvertFTC(tempFahrenheit: Int(firstTMaxString![0])!)) + " °C"
+            
+            
+            //set for 2nd next day minimum temperature label
+            let secondTString = secondTMin.text?.components(separatedBy: " ")
+            secondTMin.text? = String(tempConvertFTC(tempFahrenheit: Int(secondTString![0])!)) + " °C"
+
+            // set for 2nd next day maximum temperature label
+            let secondTMaxString = secondTMax.text?.components(separatedBy: " ")
+            secondTMax.text? = String(tempConvertFTC(tempFahrenheit: Int(secondTMaxString![0])!)) + " °C"
+
+            // set for today temperature label
+            let thirdTString = thirdTMin.text?.components(separatedBy: " ")
+            thirdTMin.text? = String(tempConvertFTC(tempFahrenheit: Int(thirdTString![0])!)) + " °C"
+
+            // set for today temperature label
+            let thirdTMaxString = thirdTMax.text?.components(separatedBy: " ")
+            thirdTMax.text? = String(tempConvertFTC(tempFahrenheit: Int(thirdTMaxString![0])!)) + " °C"
+        }
+        
+        else
+        {
+            var delimiter = " "
+            var newStringS = stringS?.components(separatedBy: " ")
+            
+            // set for current temperature label
+            let currTempF = tempConvertCTF(tempCelsius: Int(newStringS![0])!)
+            
+            newStringS![0] = String(currTempF) + " °F"
+            currentTempButtonOutlet.setTitle(newStringS![0], for: .normal)
+            
+            // set for today temperature label
+            let tString = todayTempOutlet.text?.components(separatedBy: " ")
+            todayTempOutlet.text? = String(tempConvertCTF(tempCelsius: Int(tString![0])!)) + " °F"
+            
+            // set for 1st next day minimum temperature label
+            let firstTString = firstTMin.text?.components(separatedBy: " ")
+            firstTMin.text? = String(tempConvertCTF(tempCelsius: Int(firstTString![0])!)) + " °F"
+            
+            // set for 1st next day maximum temperature label
+            let firstTMaxString = firstTMax.text?.components(separatedBy: " ")
+            firstTMax.text? = String(tempConvertCTF(tempCelsius:  Int(firstTMaxString![0])!)) + " °F"
+            
+            
+            //set for 2nd next day minimum temperature label
+            let secondTString = secondTMin.text?.components(separatedBy: " ")
+            secondTMin.text? = String(tempConvertCTF(tempCelsius: Int(secondTString![0])!)) + " °F"
+            
+            // set for 2nd next day maximum temperature label
+            let secondTMaxString = secondTMax.text?.components(separatedBy: " ")
+            secondTMax.text? = String(tempConvertCTF(tempCelsius: Int(secondTMaxString![0])!)) + " °F"
+            
+            // set for today temperature label
+            let thirdTString = thirdTMin.text?.components(separatedBy: " ")
+            thirdTMin.text? = String(tempConvertCTF(tempCelsius: Int(thirdTString![0])!)) + " °F"
+            
+            // set for today temperature label
+            let thirdTMaxString = thirdTMax.text?.components(separatedBy: " ")
+            thirdTMax.text? = String(tempConvertCTF(tempCelsius: Int(thirdTMaxString![0])!)) + " °F"
+        }
+    }
+    
+    
+    // hit the current city button to change the location
+    
+    @IBAction func currentCityChangeActionButton(_ sender: UIButton) {
+    }
+    
+    
+    
+    // convert temperature from fahrenheit to celsius
+    func tempConvertFTC(tempFahrenheit: Int) -> Int
+    {
+        let tempCelsius = (tempFahrenheit - 32) * 5 / 9
+        return tempCelsius
+    }
+    
+    
+    // convert temperature from celsius to fahrenheit
+    func tempConvertCTF(tempCelsius: Int) -> Int
+    {
+        let tempFahren = tempCelsius * 9 / 5 + 32
+        return tempFahren
     }
     
     override func didReceiveMemoryWarning()
