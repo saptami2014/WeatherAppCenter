@@ -124,9 +124,28 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     
                     // hourly weather forecast
                     self.hourlyForecast(withLocation: location.coordinate)
+                    
+                    self.newCityTextField.text? = ""
                 }
             }
+            
+            else
+            {
+                let nowCityName = self.currentCityOutlet.titleLabel?.text
+                self.newCityTextField.text? = ""
+                self.createAlert(title: "Incorrect location entered", message: "Dear User! Sorry we could not track the location ")
+                self.currentCityOutlet.setTitle(nowCityName, for: .normal)
+            }
         }
+    }
+    
+    // alert user for incorrect location address
+    func createAlert(title: String, message: String)
+    {
+        let alert = UIAlertController(title: title, message: message , preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
     
     
