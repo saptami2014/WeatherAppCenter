@@ -133,7 +133,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     // hourly forecast
     func hourlyForecast (withLocation location: CLLocationCoordinate2D)
     {
-        let url = "https://api.darksky.net/forecast/9611d5e7c2754ea4d423e30f1d258583/37.8267,-122.4233" /*+ "\(location.latitude),\(location.longitude)"*/
+        let url = "https://api.darksky.net/forecast/9611d5e7c2754ea4d423e30f1d258583/" + "\(location.latitude),\(location.longitude)"
         let request = URLRequest (url: URL(string: url)!)
         let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
             guard error == nil else { return }
