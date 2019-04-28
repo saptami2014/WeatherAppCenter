@@ -112,6 +112,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         setAllDays()
     }
     
+    // to print the current weather info from the data in dark sky
     func showCurrentWeatherForLocation(location: String)
     {
         CLGeocoder().geocodeAddressString(location) { (placemarks: [CLPlacemark]?, error: Error?) in
@@ -149,7 +150,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    // hourly forecast
+    // eftching the hourly forecast info
     func hourlyForecast (withLocation location: CLLocationCoordinate2D)
     {
         let url = "https://api.darksky.net/forecast/9611d5e7c2754ea4d423e30f1d258583/" + "\(location.latitude),\(location.longitude)"
@@ -186,7 +187,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    // current forecast
+    // fetching current forecast info
     func currentForecast(withLocation location : CLLocationCoordinate2D)
     {
 
@@ -201,6 +202,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 {
                     let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as! [String : Any]
 
+                    if let  areaName = json["timezone"] as? String
+                    {
+                        print(areaName, " is the area coordinates recieved.")
+                    }
+                    
                     if let currently = json["currently"] as? [String : Any] {
                         
                         if let chance2 = currently["temperature"] as? Double{

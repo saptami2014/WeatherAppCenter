@@ -16,7 +16,6 @@
 		1FFB8B0A227344BA005FCEF3 /* WeatherAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFB8B09227344BA005FCEF3 /* WeatherAppUITests.swift */; };
 		1FFB8B1822734510005FCEF3 /* WeatherJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFB8B1722734510005FCEF3 /* WeatherJSON.swift */; };
 		1FFB8B1A22734550005FCEF3 /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFB8B1922734550005FCEF3 /* Clock.swift */; };
-		1FFB8B1C22737D8B005FCEF3 /* CurrentJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFB8B1B22737D8B005FCEF3 /* CurrentJSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +51,6 @@
 		1FFB8B0B227344BA005FCEF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1FFB8B1722734510005FCEF3 /* WeatherJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherJSON.swift; sourceTree = "<group>"; };
 		1FFB8B1922734550005FCEF3 /* Clock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
-		1FFB8B1B22737D8B005FCEF3 /* CurrentJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentJSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +103,6 @@
 			children = (
 				1FFB8AE9227344B9005FCEF3 /* AppDelegate.swift */,
 				1FFB8B1722734510005FCEF3 /* WeatherJSON.swift */,
-				1FFB8B1B22737D8B005FCEF3 /* CurrentJSON.swift */,
 				1FFB8B1922734550005FCEF3 /* Clock.swift */,
 				1FFB8AEB227344B9005FCEF3 /* ViewController.swift */,
 				1FFB8AED227344B9005FCEF3 /* Main.storyboard */,
@@ -268,7 +265,6 @@
 				1FFB8AEC227344B9005FCEF3 /* ViewController.swift in Sources */,
 				1FFB8AEA227344B9005FCEF3 /* AppDelegate.swift in Sources */,
 				1FFB8B1A22734550005FCEF3 /* Clock.swift in Sources */,
-				1FFB8B1C22737D8B005FCEF3 /* CurrentJSON.swift in Sources */,
 				1FFB8B1822734510005FCEF3 /* WeatherJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
